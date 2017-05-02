@@ -1,0 +1,240 @@
+<!-- views/index.ejs -->
+<html ng-app="eccy_app">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Hamster Gold - Multiplayer Browser Game</title>
+    <!-- styles -->
+    <link rel='stylesheet' href='static/css/index.css'>
+    <link rel='stylesheet' href='static/css/reset.css'>
+    <link rel='stylesheet' href='static/css/hover/hover.css'>
+    <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Thambi" rel="stylesheet">
+
+
+    <!-- FAVICON -->
+    <link rel="shortcut icon" href="static/img/coin3.png">
+
+
+
+
+    <!-- require angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.min.js"></script>
+    <script src="//code.angularjs.org/1.2.20/angular-sanitize.min.js"></script>
+    <!-- load momentJS (required for angular-moment) -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+    <!-- load angular-moment -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-moment/0.9.0/angular-moment.min.js"></script>
+    <script src="static/js/jquery-1.12.2.js"></script>
+    <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script src="static/js/app.js"></script>
+</head>
+<body>
+    <div class="container" ng-controller="LoginController">
+        <div class="main">
+
+
+            <!--<img class="logo hvr-buzz" src="static/img/ham1.gif"><img class="logo1 hvr-buzz" src="static/img/coin2.gif">-->
+            <!--<div class="beta"><h3>BETA</h3></div>-->
+            <div class="logo-wrapper">
+                <h1 class="hamster-txt">hamster.</h1>
+                <img src="static/img/coins.png" class="gold-icon hvr-buzz"/>
+                <h2 class="tagline">Multiplayer Browser Adventure</h2>
+            </div>
+
+
+            <!--<div class="social-login-wrapper">-->
+
+                <div class="fb-login-w">
+                    <div class="btn-facebook2"></div>
+                    <a href="/auth/facebook" class="hvr-sink btn-facebook"><img class='icon' src="static/img/facebook_icon.png">log in with facebook</a>
+                </div>
+
+
+                <div class="tw-login-w">
+                    <a class="btn-twitter2"></a>
+                    <a href="/auth/twitter" class="hvr-sink btn-twitter"><img class='icon' src="static/img/twitter_icon.png">log in with twitter</a>
+                </div>
+
+
+            <!--</div>-->
+            <p>We'll never post anything without<br>your permission.</p>
+
+
+            <button class="prefer-email-btn" ng-click="isOpen = !isOpen; findAllUsers()">log in with email</button>
+
+
+
+
+            <div class="lb-outer-wrapper">
+                <!--<img src="static/img/new/gold.png" class="gold-img">-->
+
+                <div class="mobile-lb-text"><h1>leaderboard</h1></div>
+                <div class="banner-styles">
+                    <div class="banner-main"><h1>leaderboard</h1></div>
+                    <div class="left-tri"></div>
+                    <div class="right-tri"></div>
+                    <img src="static/img/banner_tip.png" class="left-bt"/>
+                    <img src="static/img/banner_tip.png" class="right-bt"/>
+                </div>
+
+
+                <div class="lb-inner-wrapper">
+
+                    <div class='first-wrapper' ng-repeat="user in leaderboard">
+
+                        <div class="lb-grey-bg" ng-show="user.rank %2"></div>
+                        <div class="lb-grey-bg-t" ng-show="user.rank %2"></div>
+
+
+                        <div class="profile_img">
+                            <img ng-src="{{user.image_url}}" class="rounded">
+                        </div>
+                        <div class="rank" ng-class="{
+                        'color-g' : user.rank == 1,
+                        'color-s' : user.rank == 2,
+                        'color-b' : user.rank == 3
+                          }"><h1 ng-bind="user.rank"></h1></div>
+
+                        <div class="lb-info-wrapper">
+                            <h1 ng-bind="user.display_name"></h1>
+                            <h2 ng-bind="user.real_name"></h2>
+                        </div>
+
+                        <div class="lb-score-wrapper">
+                            <img src="static/img/coin2.png" class="coin-icon hvr-buzz"/>
+                            <h1 ng-bind="user.score"></h1>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="last-updated"><h1>last updated on <span ng-bind="updated"></span></h1></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- ::::::::::::::::::::::::::::::::::::::::::::: USER EDIT VIEW ::::::::::::::::::::::::::::::::::::::::::::: -->
+            <!-- ::::::::::::::::::::::::::::::::::::::::::::: USER EDIT VIEW ::::::::::::::::::::::::::::::::::::::::::::: -->
+            <!-- ::::::::::::::::::::::::::::::::::::::::::::: USER EDIT VIEW ::::::::::::::::::::::::::::::::::::::::::::: -->
+            <div id="email-wrapper-bg" ng-show="isOpen">
+                <a class='cancel-btn hvr-shrink' ng-click="isOpen = !isOpen" href="/">too much typing.. log in with Facebook instead</a>
+                <div class="email-login">
+
+                    <!-- Register FORM -->
+                    <form class='register-form' action="/signup" method="post" name="regForm" novalidate>
+                        <h4>I'm new here..</h4>
+                        <div class="all-input-wrapper">
+                            <div class="form-group">
+                                <label>Display Name</label>
+                                <div class="input-wrapper">
+                                    <div class="error-wrapper"><h6 class='error-small' ng-show="dnUnique == 0">that display name is already taken</h6></div>
+                                    <input type="text" class="form-control" ng-class="{ 'error' : regForm.display_name.$invalid && regForm.display_name.$dirty, 'no-error' : regForm.display_name.$valid && regForm.display_name.$dirty, 'has-dup-dn' : dnUnique == 0 }" name="display_name" ng-pattern="/^[a-z0-9_]*$/" ng-model="reg.dn" ng-minlength="3" ng-change="verifyDuplicate(reg.dn)" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Real Name</label>
+                                <div class="input-wrapper">
+                                    <div class="error-wrapper"><h6 class='error-small' ng-show="regForm.real_name.$invalid && regForm.real_name.$dirty">name must be at least 2 characters</h6></div>
+                                    <input type="text" class="form-control" ng-class="{ 'error' : regForm.real_name.$invalid && regForm.real_name.$dirty, 'no-error' : regForm.real_name.$valid && regForm.real_name.$dirty }" name="real_name" ng-model="reg.rn" ng-minlength="2" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <div class="input-wrapper">
+                                    <div class="error-wrapper"><h6 class='error-small' ng-show="emailUnique == 0">that email is already registered</h6></div>
+                                    <input type="text" class="form-control" ng-class="{ 'error' : regForm.email.$invalid && regForm.email.$dirty, 'no-error' : regForm.email.$valid && regForm.email.$dirty, 'has-dup-dn' : emailUnique == 0 }" name="email" ng-model="reg.email" ng-minlength="7" ng-change="verifyDuplicateEmail(reg.email)" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <div class="input-wrapper">
+                                    <div class="error-wrapper"><h6 class='error-small' ng-show="regForm.password.$invalid && regForm.password.$dirty">password must be at least 4 characters</h6></div>
+                                    <input type="password" class="form-control" name="password" ng-model="reg.password" ng-minlength="4" required>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="register-email-btn" ng-class="{ 'register-email-btn-good hvr-shrink' : regForm.$valid && dnUnique == 1 && emailUnique == 1}" ng-disabled="regForm.$invalid || dnUnique == 0 || emailUnique == 0" >Register with email</button>
+                    </form>
+
+                    <!-- Login FORM -->
+                    <form class='login-form' action="/login" method="post" name="logForm" novalidate>
+                        <h4>I'm back!</h4>
+                        <div class="all-input-wrapper">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <div class="input-wrapper">
+                                    <div class="error-wrapper"></div>
+                                    <input type="text" class="form-control" ng-class="{ 'error' : logForm.email.$invalid && logForm.email.$dirty, 'no-error' : logForm.email.$valid && logForm.email.$dirty }" name="email" ng-model="log.email" ng-minlength="7" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <div class="input-wrapper">
+                                    <div class="error-wrapper"></div>
+                                    <input type="password" class="form-control" name="password" ng-model="log.password" ng-minlength="4" required>
+                                </div>
+                            </div>
+                         </div>
+                        <button type="submit" class="register-email-btn" ng-class="{ 'login-email-btn-good hvr-shrink' : logForm.$valid }" ng-disabled="logForm.$invalid" >Login with email</button>
+                    </form>
+                </div>
+            </div>
+            <!-- ::::::::::::::::::::::::::::::::::::::::::::: USER EDIT VIEW ::::::::::::::::::::::::::::::::::::::::::::: -->
+            <!-- ::::::::::::::::::::::::::::::::::::::::::::: USER EDIT VIEW ::::::::::::::::::::::::::::::::::::::::::::: -->
+            <!-- ::::::::::::::::::::::::::::::::::::::::::::: USER EDIT VIEW ::::::::::::::::::::::::::::::::::::::::::::: -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+    <div class="footer" ng-click="goToLink()">
+        <div class="created-by-wrapper">
+            <div class="created-by-text">Created by <a target="_blank" href="http://andyfeng.com">Andy Feng</a></div>
+
+            <a class="link-box" target="_blank" href="https://twitter.com/ndyf"><img src="static/img/twitter_icon.png" class="link-icon"/></a>
+            <a class="link-box fb" target="_blank" href="https://www.facebook.com/andyfeng241"><img src="static/img/facebook_icon.png" class="link-icon "/></a>
+            <a class="link-box in" target="_blank" href="https://www.linkedin.com/in/andy-feng-64563035"><img src="static/img/in.png" class="link-icon lr"/></a>
+            <a class="link-box gh" target="_blank" href="https://github.com/peachteaboba"><img src="static/img/gh.png" class="link-icon lr"/></a>
+        </div>
+    </div>
+</body>
+</html>

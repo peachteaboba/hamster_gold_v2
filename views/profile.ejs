@@ -1,0 +1,112 @@
+<!-- views/profile.ejs -->
+<html ng-app="eccy_app">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>eccy ::: profile</title>
+    <link rel='stylesheet' href='static/css/reset.css'>
+    <link rel='stylesheet' href='static/css/hover/hover.css'>
+    <link rel='stylesheet' href='static/css/profile.css'>
+    <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+    <!-- require angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.min.js"></script>
+    <script src="//code.angularjs.org/1.2.20/angular-sanitize.min.js"></script>
+    <!-- load momentJS (required for angular-moment) -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+    <!-- load angular-moment -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-moment/0.9.0/angular-moment.min.js"></script>
+    <script src="static/js/jquery-1.12.2.js"></script>
+    <script type ="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script src="static/js/app.js"></script>
+    <!--<script src="static/js/play_details.js"></script>-->
+
+
+
+
+</head>
+<body>
+    <div ng-init="thisUserId = '<%= user._id %>';">
+        <div class="profile-info" ng-controller="ProfileController">
+            <div class='profile-wrapper'>
+                <div class="circle hvr-grow"></div>
+                <p class="record"><span class='green'>{{userInfo.wins}}</span> wins</p>
+                <div class="profile_img">
+                    <img ng-src="{{userInfo.image_url}}" class="rounded">
+                </div>
+                <div class='score'>
+                    <div class="score-wrapper">
+                        <img src="static/img/rx.png" class="drug-icon hvr-buzz"/>
+                        <h5 class="score-num">{{userInfo.score}}</h5>
+                    </div>
+                </div>
+                <h3 class="display-name">{{userInfo.display_name}}</h3>
+                <h3 class="real-name">{{userInfo.real_name}}</h3>
+                <h3 class="created-at">Account created: <span am-time-ago="userInfo.created_at"></span></h3>
+                <div class="circle3"></div>
+            </div>
+
+
+            <div class="account-wrapper">
+                <div class="facebook">
+                    <img src="static/img/facebook1.png" class="social-icon"/>
+                    <% if (user.facebook.token) { %>
+                    <a href="/unlink/facebook" class="facebook-unlink-btn hvr-fade-email">Unlink</a>
+                    <img src="static/img/check.png" class="check-icon-fb"/>
+                    <% } else { %>
+                    <a href="/connect/facebook" class="facebook-btn hvr-fade-facebook">Connect</a>
+                    <% } %>
+                </div>
+                <div class="facebook">
+                    <img src="static/img/twitter1.png" class="social-icon"/>
+                    <% if (user.twitter.token) { %>
+                    <a href="/unlink/twitter" class="twitter-unlink-btn hvr-fade-email">Unlink</a>
+                    <img src="static/img/check.png" class="check-icon-t"/>
+                    <% } else { %>
+                    <a href="/connect/twitter" class="twitter-btn hvr-fade-twitter">Connect</a>
+                    <% } %>
+                </div>
+                <a href="/logout"><button class="logout-btn hvr-fade-logout">Logout</button></a>
+
+            </div>
+            <a id='admin' class="admin-btn hvr-shrink" href="#/admin" ng-show="userInfo.role == 'admin'">admin console</a>
+
+
+            <!--<div class="lb-btn-wrapper hvr-shrink"><a class="nav-div-wrapper-leader" href="#/leader"><span>leaderboard</span><img src="static/img/lb_silver.png" class="lb-btn-image"></a></div>-->
+        </div>
+
+        <!--<div class="nav-bar">-->
+            <!--<div class="nav-div-wrapper1 play-dark"><img src="static/img/playis.png" class="playis"><a class="nav-div-wrapper11 play hvr-sink" href="#/play">play game<img src="static/img/playi.png" class="playi"></a></div>-->
+            <!--<div class="nav-div-wrapper1 achi-dark"><img src="static/img/statsis.png" class="statsis"><a class="nav-div-wrapper11 achi hvr-sink" href="#/stats">my stats<img src="static/img/statsi.png" class="statsi"></a></div>-->
+
+        <!--</div>-->
+
+
+        <div ng-view=""></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+</body>
+</html>

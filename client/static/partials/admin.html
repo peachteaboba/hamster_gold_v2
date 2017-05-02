@@ -1,0 +1,95 @@
+<head>
+    <link rel='stylesheet' href='static/css/admin.css'>
+</head>
+
+
+
+
+
+<div class="admin-wrapper" ng-controller="AdminController">
+
+    <a class="back-btn hvr-shrink" href="#/play" >back to main</a>
+
+    <div class="show-users">
+
+        <p class="total-num">Total User Count: <span> {{users.length}}</span></p>
+
+
+        <div class="search-users">
+            <input class="search-box" type="text" ng-model="filter_name" placeholder="search users..">
+        </div>
+
+
+
+
+        <div class='admin-user-box' ng-repeat="user in users | filter: filter_name" ng-class="{ 'admin-border' : user.role == 'admin', 'user-border' : user.role == 'user' }">
+            <!--<div ng-class="{ 'admin-box' : user.role == 'admin' }">-->
+                <p><span>role:</span> {{user.role}}</p>
+                <p><span>id:</span> {{user._id}}</p>
+                <p><span>display_name:</span> {{user.display_name}}</p>
+                <p><span>real_name:</span> {{user.real_name}}</p>
+                <p><span>gold:</span> {{user.score}}</p>
+
+                <a class="delete-btn" ng-click='removeUser(user._id)' href="#/admin">Delete</a>
+                <a class="edit-btn" ng-click='editUser(user._id)' href="#/admin">Edit</a>
+            <!--</div>-->
+        </div>
+    </div>
+
+
+
+
+    <!--<input name="card[description]" ng-model="card.description" ng-init="card.description='Visa-4242'">-->
+
+
+    <!-- ::::::::::::::::::::::::::::::::::::::::::::: USER EDIT VIEW :::::::::::::::::::::::::::::::::::::::::::: -->
+    <!-- ::::::::::::::::::::::::::::::::::::::::::::: USER EDIT VIEW ::::::::::::::::::::::::::::::::::::::::::::: -->
+    <!-- ::::::::::::::::::::::::::::::::::::::::::::: USER EDIT VIEW ::::::::::::::::::::::::::::::::::::::::::::: -->
+    <div id="edit-wrapper-bg" ng-show="editShow == 1">
+        <a class='cancel-btn hvr-shrink' ng-click='editCancel()' href="#/admin">abort mission..</a>
+        <div class="user-edit" ng-show="editShow == 1">
+            <h1>edit user:</h1>
+            <div class="profile-img-stats">
+                <img ng-src="{{edit.image_url}}" class="rounded">
+            </div>
+            <div class="info-hard">
+                <p>id: <span>{{::edit._id}}</span></p>
+                <p>role: <span>{{::edit.role}}</span></p>
+                <p>display_name: <span>{{::edit.display_name}}</span></p>
+                <p>real_name: <span>{{::edit.real_name}}</span></p>
+                <p>score: <span>{{::edit.score}}</span> / wins: <span>{{::edit.wins}}</span> / losses: <span>{{::edit.losses}}</span></p>
+                <p>created_at: <span>{{::edit.created_at}} </span><span class='ago' am-time-ago="edit.created_at"></span></p>
+            </div>
+            <div class="edit-form-wrapper">
+
+                <form name="editForm" novalidate>
+                    <label>role: <input type="text" ng-model="edit.role"  required></label>
+                    <label>display_name: <input type="text" ng-model="edit.display_name"  required></label>
+                    <label>real_name: <input type="text" ng-model="edit.real_name" required></label>
+                    <label>score: <input type="text" ng-model="edit.score" required></label>
+                    <label>wins: <input type="text" ng-model="edit.wins" required></label>
+                    <label>losses: <input type="text" ng-model="edit.losses" required></label>
+                </form>
+                <a class="edit-submit-btn hvr-shrink" ng-hide="editForm.$invalid" ng-click="editSubmit(edit)" href="#/admin">submit changes</a>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>

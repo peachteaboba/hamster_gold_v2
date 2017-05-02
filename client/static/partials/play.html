@@ -1,0 +1,340 @@
+<head>
+    <link rel='stylesheet' href='static/css/play.css'>
+</head>
+
+
+<div class="play-wrapper" ng-controller="GameController" ng-keypress="changed($event)">
+
+
+
+    <div class="lb-chat-main-wrapper">
+
+        <div class="left-wrapper">
+            <div class="lb-wrapper">
+
+                <h1>leaderboard</h1>
+                <h2>top 10</h2>
+
+
+                <div class="top3">
+                    <div class="lb-first">
+                        <img src="static/img/new/gold.png" class="gold-img">
+                        <img src="{{one.image_url}}" class="img-url-2 rounded hvr-pulse-grow" />
+                    </div>
+                    <div class="lb1-info">
+                        <img src="static/img/new/one.png" class="one-icon">
+                        <p class="dn">{{one.display_name}}</p>
+                        <p class="rn">{{one.real_name}}</p>
+                        <h3><img class="logo1 hvr-buzz" src="static/img/coin2.gif"><span>{{one.score}}</span></h3>
+                    </div>
+                </div>
+
+                <div class="top3-2">
+                    <div class="lb-first">
+                        <img src="static/img/new/silver.png" class="gold-img">
+                        <img src="{{two.image_url}}" class="img-url-2 rounded hvr-pulse-grow" />
+                    </div>
+                    <div class="lb1-info">
+                        <img src="static/img/new/two.png" class="one-icon">
+                        <p class="dn">{{two.display_name}}</p>
+                        <p class="rn">{{two.real_name}}</p>
+                        <h3><img class="logo1 hvr-buzz" src="static/img/coin2.gif"><span>{{two.score}}</span></h3>
+                    </div>
+                </div>
+
+                <div class="top3-3">
+                    <div class="lb-first">
+                        <img src="static/img/new/bronz.png" class="gold-img">
+                        <img src="{{three.image_url}}" class="img-url-2 rounded hvr-pulse-grow" />
+                    </div>
+                    <div class="lb1-info">
+                        <img src="static/img/new/three.png" class="one-icon">
+                        <p class="dn">{{three.display_name}}</p>
+                        <p class="rn">{{three.real_name}}</p>
+                        <h3><img class="logo1 hvr-buzz" src="static/img/coin2.gif"><span>{{three.score}}</span></h3>
+                    </div>
+                </div>
+
+
+                <div class="lb-rest-wrapper">
+
+
+                        <div class='lb-other' ng-repeat="user in leaderboard">
+                            <p class="rank">{{user.rank}}</p>
+
+
+
+
+                                <img src="{{user.image_url}}" class="rank2" />
+                                <div class="dn-rn-wrapper">
+                                    <p class="rank-dn">{{user.display_name}}</p>
+                                    <p class="rank-rn">{{user.real_name}}</p>
+                                </div>
+
+                                <p class="rank-s"><img class="logo1 hvr-buzz coin-lb" src="static/img/coin2.gif">{{user.score}}</p>
+
+
+
+                        </div>
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+        </div>
+
+
+
+        <div class="right-wrapper">
+
+            <div class="user-chat-wrapper">
+                <div class='user-wrapper'>
+                    <div id="user"></div>
+                </div>
+                <div class="chat-wrapper">
+                    <div class='conversation-wrapper'>
+                        <div id="conversation"></div>
+                    </div>
+                    <div class="comment-form-wrapper">
+                        <input id="data" type="text">
+                        <input type="button" id="dataSend" value="send">
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+            <div class="room-wrapper">
+                <button id="new_game" class="hvr-shrink">create a new game</button>
+                <p> -or -</p>
+                <h5>click on a public game room below to join</h5>
+                <div class="rooms">
+                    <div class="search-rooms">
+                        <input class="search-box" type="text" ng-model="search" placeholder="search rooms..">
+                    </div>
+                    <div class="room-btn-wrapper" ng-repeat=" (key, value) in showRooms | Find: search||'' " ng-hide="key == currentRoom">
+                    <!--<div class="room-btn-wrapper" ng-repeat=" (key, value) in showRooms " ng-hide="key == currentRoom">-->
+                        <button ng-show="value.status != 'full'" class="room-btn hvr-wobble-horizontal" ng-class="{ 'room-full' : value.status == 'full' }" id='{{key}}'><span class="room-name">Room Host:</span>{{value.name}}<span class="room-status">Status: <span>{{value.status}}</span></span></button>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- ::::::::::::::::::::::::::::::::::::::::::::: USER STATS VIEW :::::::::::::::::::::::::::::::::::::::::::: -->
+    <!-- ::::::::::::::::::::::::::::::::::::::::::::: USER STATS VIEW ::::::::::::::::::::::::::::::::::::::::::::: -->
+    <!-- ::::::::::::::::::::::::::::::::::::::::::::: USER STATS VIEW ::::::::::::::::::::::::::::::::::::::::::::: -->
+    <div id="stats-wrapper-bg">
+        <div class="user-stats">
+
+            <div class="profile-img-stats">
+                <img ng-src="{{userStats.image_url}}" class="rounded">
+            </div>
+            <h1>{{userStats.display_name}}</h1>
+            <h2>{{userStats.real_name}}</h2>
+            <h3 class="created-at-stats">Account created: <span am-time-ago="userStats.created_at"></span></h3>
+
+            <div class="bottom-stats-wrapper">
+                <div class="bottom-stat-box"><h3><span>Total Lifetime Gold:</span> {{userStats.score}}</h3></div>
+                <div class="bottom-stat-box"><h3><span>Wins:</span> {{userStats.wins}}</h3></div>
+                <div class="bottom-stat-box"><h3><span>Leaderboard Position:</span> ???</h3></div>
+                <div class="bottom-stat-box"><h3><span>Win Percentage:</span> ???</h3></div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <!-- ::::::::::::::::::::::::::::::::::::::::::::: GAME ROOM VIEW ::::::::::::::::::::::::::::::::::::::::::::: -->
+    <!-- ::::::::::::::::::::::::::::::::::::::::::::: GAME ROOM VIEW ::::::::::::::::::::::::::::::::::::::::::::: -->
+    <!-- ::::::::::::::::::::::::::::::::::::::::::::: GAME ROOM VIEW ::::::::::::::::::::::::::::::::::::::::::::: -->
+    <div id="play-wrapper-bg" ng-keypress="changed($event)">
+        <!-- When host exits game ------------------------------------------------------------------->
+        <div id="exit-wrapper-bg">
+            <p>The host of this room has left the game.</p>
+            <button id='exitGamePlayer' class='exit-btn-player hvr-shrink'>exit game</button>
+        </div>
+        <!------------------------------------------------------------------------------------------->
+
+
+        <div class="top-nav">
+            <p id="game-id"></p>
+            <button id='exitGame' class='exit-btn hvr-shrink'>exit game</button>
+        </div>
+
+        <div class="room-status-updates">
+            <div id="player-count"></div>
+            <div id="playersWaiting"></div>
+        </div>
+
+        <div id="player1"></div>
+        <div id="player2"></div>
+
+
+
+
+        <div id="game-area-wrapper">
+            <div class="score-bar">
+                <div class="score-bar-l" ng-class="{ 'sbg' : ready11 == 1 }" ></div>
+                <div class="score-bar-r" ng-class="{ 'sbg' : ready22 == 1 }"></div>
+                <div class="game-start">
+
+                    <button class="ready-check hvr-shrink" ng-show="gRole == 1" ng-click="ready_1()">click here when ready (player 1)</button>
+                    <button class="ready-check hvr-shrink" ng-show="gRole == 2" ng-click="ready_2()">click here when ready (player 2)</button>
+                    <div class="ready-check game-wait" ng-show="ready11 == 1 && ready22 == 0 && gRole == 11">waiting for player 2</div>
+                    <div class="ready-check game-wait" ng-show="ready11 == 0 && ready22 == 1 && gRole == 22">waiting for player 1</div>
+                    <div class="ready-check game-on" ng-show="gameStart == 1">Game Started!</div>
+
+                </div>
+            </div>
+
+            <div class="score-wrapper" ng-show="gameOn == 1">
+                <div class="p1_score"><img src="static/img/game/coin2.gif">{{p1_score}}</div>
+                <div class="p2_score">{{p2_score}}<img src="static/img/game/coin2.gif"></div>
+
+            </div>
+
+
+            <div class="rules-wrapper" ng-show="gameOn != 1">
+                <h1>hello <img class="logo hvr-buzz" src="static/img/ham1.gif"></h1>
+                <h1>you have wondered into an underground burrow that contains <img class="logo1 hvr-buzz" src="static/img/coin2.gif"></h1>
+                <h1>go grab as much as you can</h1>
+
+                <div class="rules">
+                    <h2>RULES:</h2>
+                    <h1>game starts when both players click ready</h1>
+                    <h1>first to 100 <img class="logo1 hvr-buzz" src="static/img/coin2.gif"> wins</h1>
+                    <h1>winner gets 2x <img class="logo1 hvr-buzz" src="static/img/coin2.gif"> added to profile</h1>
+                    <h1>if two <img class="logo hvr-buzz" src="static/img/ham1.gif"> meet, both their <img class="logo1 hvr-buzz" src="static/img/coin2.gif"> are equal to the average</h1>
+                </div>
+
+
+                <h3>*hint : if you are losing, try to catch the other <img class="logo hvr-buzz" src="static/img/ham1.gif"></h3>
+
+
+            </div>
+
+
+
+
+
+
+
+            <div class='world-wrapper'>
+                <div id="world"></div>
+            </div>
+
+
+
+
+
+
+            <!--this is for testing only-->
+            <!--<div class="game-status">ready11:{{ready11}} -&#45;&#45;&#45;&#45;  ready22:{{ready22}} -&#45;&#45;&#45;&#45; gameStart:{{gameStart}} -&#45;&#45;&#45;&#45; winner:{{winner}}</div>-->
+
+
+
+        </div>
+
+    <!-- When a winner is decided ------------------------------------------------------------------->
+    <div class="winner-bg" ng-show="winner == 1 || winner == 2">
+        <div class="win-info-wrapper">
+            <h1><img class="logo1 hvr-buzz" src="static/img/ham1.gif"> {{winner}} wins!</h1>
+
+            <div class="play-one-winnings-wrapper" ng-class="{ 'win' : winner == 1 }">
+                <h2>player 1</h2>
+                <h3>{{gPlayerArray[0].display_name}}</h3>
+                <h4><img src="static/img/game/coin2.gif"><span>{{p1_score}}</span> </h4>
+                <div class="win-bonus-wrapper">
+                    <h5 ng-show="winner == 1">win bonus: <span class="x2">x2</span></h5>
+                </div>
+                <h6>total <img class="logo1 hvr-buzz" src="static/img/coin2.gif"> gained: <span>{{p1_winnings}}</span> </h6>
+            </div>
+
+            <div class="play-two-winnings-wrapper" ng-class="{ 'win' : winner == 2 }">
+                <h2>player 2</h2>
+                <h3>{{gPlayerArray[1].display_name}} </h3>
+                <h4><img src="static/img/game/coin2.gif"><span>{{p2_score}}</span> </h4>
+                <div class="win-bonus-wrapper">
+                    <h5 ng-show="winner == 2">win bonus: <span class="x2">x2</span></h5>
+                </div>
+                <h6>total <img class="logo1 hvr-buzz" src="static/img/coin2.gif"> gained: <span>{{p2_winnings}}</span> </h6>
+            </div>
+        </div>
+
+
+        <!--<button class='exit-btn-player hvr-shrink' ng-click="rematchInit()">rematch</button>-->
+        <button class='exit-btn-player hvr-shrink' ng-click="exitGame()">exit game</button>
+    </div>
+    <!------------------------------------------------------------------------------------------->
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+</div>
+
